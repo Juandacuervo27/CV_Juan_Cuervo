@@ -1,43 +1,301 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de vida</title>
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        body { 
+            background: #0f0f0f; 
+            color: #e6e6e6; 
+            padding-bottom: 50px;
+        }
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+        header {
+            text-align: center; padding: 40px 20px;
+            background: linear-gradient(135deg, #111, #1c1c1c);
+            border-bottom: 1px solid #222;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+            transition: box-shadow 1s ease;
+        }
+        header:hover { 
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.6); 
+        }
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+        header h1 { font-size: 2.6rem; letter-spacing: 1px; color: #9ecbff; text-shadow: 0 0 10px rgba(158,203,255,0.6); }
+        header h3 { margin-top: 8px; color: #bcdcff; font-weight: 400; }
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+        header img {
+            margin-top: 20px; width: 180px; height: 180px;
+            border-radius: 50%; object-fit: cover;
+            border: 3px solid #9ecbff; box-shadow: 0 0 20px rgba(4, 49, 99, 0.5);
+            transition: box-shadow 1s ease;
+        }
+        header img:hover {
+            box-shadow: 0 0 30px rgba(78,170,255,0.8);
+        }
 
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        header p { margin-top: 8px; color: #c6c6c6; }
+
+        section {
+            max-width: 95%; margin: 40px auto; padding: 30px;
+            background: #151515; border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+            transition: box-shadow 1s ease;
+        }
+        section:hover { box-shadow: 0 0 30px rgba(0, 100, 255, 0.6); }
+
+        article {
+            margin-bottom: 40px; padding: 20px;
+            background: #1b1b1b; border-left: 4px solid #4eaaff;
+            border-radius: 6px; transition: transform 0.25s ease, background 0.25s ease;
+        }
+        article:hover { background: #222; transform: translateX(5px); border-left: 4px solid green; }
+
+        article h2 { font-size: 1.8rem; margin-bottom: 15px; color: #4eaaff; text-shadow: 0 0 6px rgba(78,170,255,0.5); }
+        article p, li { line-height: 1.6; color: #d1d1d1; }
+        li { margin-bottom: 8px; }
+        li::marker { color: #4eaaff; }
+
+        hr { border: none; border-bottom: 1px solid #333; margin: 30px 0; }
+        footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px 10px;
+    background: linear-gradient(135deg, #111, #1a1a1a);
+    border-top: 1px solid #222;
+    color: #bdbdbd;
+    font-size: 0.9rem;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+    transition: box-shadow 1s ease, color 0.3s ease;
+    z-index: 999; /* para que quede al frente de todo */
+}
+
+footer:hover {
+    box-shadow: 0 0 20px rgba(0, 100, 255, 0.6);
+    color: #e6e6e6;
+}
+
+footer a {
+    color: #4eaaff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #7dc3ff;
+    text-shadow: 0 0 6px rgba(78,170,255,0.6);
+}
+
+form {
+    display: grid;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+label {
+    font-weight: 600;
+    color: #9ecbff;
+}
+
+input, textarea, select {
+    background: #111;
+    border: 1px solid #333;
+    padding: 10px;
+    color: #e6e6e6;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #4eaaff;
+    box-shadow: 0 0 8px rgba(78,170,255,0.4);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+button {
+    background: linear-gradient(135deg, #1e90ff, #005eff);
+    border: none;
+    padding: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(78,170,255,0.6);
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.checkbox-group label {
+    font-weight: 400;
+    color: #d1d1d1;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+.btn-contacto {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 28px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #1e90ff, #005eff);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(78,170,255,0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-contacto:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(78,170,255,0.9);
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Juan David Cuervo Rodriguez</h1>
+        <h3>Software Developer — Web and Freelance</h3>
+
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg" alt="Foto de perfil">
+
+        <p>📍 Calle 15 #30-186 Bogotá, Distrito Capital, Colombia</p>
+        <p>📘 juandavidcuervorodriguez@gmail.com</p>
+        <p>📱 Celular: 3222017248</p>
+        <a href="#contacto" class="btn-contacto">📩 Contactar</a>
+    </header>
+
+    <section>
+
+        <article>
+            <h2>Información académica</h2>
+            <p>
+                Soy estudiante de <strong>Análisis y Desarrollo de Software en el SENA</strong>, con enfoque en la creación de soluciones
+                eficientes, escalables y orientadas a mejorar la experiencia del usuario. Mi formación combina fundamentos sólidos
+                de programación con prácticas actuales de desarrollo frontend y backend.
+            </p>
+            <p>
+                A lo largo de mi proceso he fortalecido mis habilidades en construcción de interfaces modernas, lógica de programación,
+                automatización y diseño de experiencias digitales funcionales. Me caracterizo por el aprendizaje continuo, la disciplina
+                y el interés genuino por la tecnología.
+            </p>
+            <p>
+                Me motiva trabajar en proyectos donde pueda aportar creatividad, pensamiento crítico y el deseo de mejorar procesos
+                mediante software que deje un impacto real.
+            </p>
+        </article><hr>
+
+        <article>
+            <h2>Intereses laborales</h2>
+            <ul>
+                <li>Desarrollo de software en ambientes reales de trabajo</li>
+                <li>Construcción de aplicaciones web front-end y back-end</li>
+                <li>Diseño y desarrollo de videojuegos independientes</li>
+                <li>Optimización de interfaces y experiencias de usuario</li>
+                <li>Participación en equipos de desarrollo ágiles</li>
+            </ul>
+        </article><hr>
+        
+        <article>
+            <h2>Experiencia laboral</h2>
+            <ul>
+                <li><strong>Freelance — Desarrollo Web</strong>: Creación de páginas funcionales y responsivas.</li>
+                <li><strong>Proyectos académicos</strong>: Desarrollo de software con Python, JavaScript y SQL.</li>
+                <li><strong>Diseño de videojuegos</strong>: Prototipos, lógicas de juego y diseño visual.</li>
+                <li><strong>Modelado de procesos</strong>: Construcción de diagramas, análisis de requerimientos y documentación.</li>
+            </ul>
+        </article><hr>
+
+        <article>
+            <h2>Educación</h2>
+            <ul>
+                <li><strong>Servicio Nacional de Aprendizaje (SENA)</strong></li>
+                <li>Programa: Análisis y Desarrollo de Software</li>
+                <li>Formación complementaria: Lógica de programación, programación orientada a objetos, diseño web, bases de datos, metodologías ágiles</li>
+            </ul>
+        </article><hr>
+
+        <article>
+            <h2>Habilidades Técnicas</h2>
+            <ul>
+                <li>HTML — Creación de interfaces responsivas y estructuradas</li>
+                <li>CSS — Diseño moderno, uso de animaciones y layouts avanzados</li>
+                <li>JavaScript — Funcionalidades interactivas y manejo del DOM</li>
+                <li>Python — Automatización, scripts, backend básico y análisis lógico</li>
+                <li>Git/GitHub — Control de versiones y trabajo colaborativo</li>
+                <li>SQL — Consultas, modelado básico y gestión de datos</li>
+                <li>Diseño de videojuegos — Mecánicas, prototipos y diseño conceptual</li>
+            </ul>
+        </article><hr>
+
+        <article>
+            <h2>Competencias y habilidades</h2>
+            <ol>
+                <li>Comunicación efectiva y claridad en la transmisión de ideas</li>
+                <li>Trabajo en equipo y adaptabilidad a entornos colaborativos</li>
+                <li>Resolución de problemas con enfoque analítico</li>
+                <li>Creatividad en diseño y desarrollo de soluciones digitales</li>
+                <li>Compromiso, responsabilidad y cumplimiento de objetivos</li>
+            </ol>
+        </article>
+        <hr>
+<article>
+    <h2>Idiomas</h2>
+    <ul>
+        <li>Español — Nativo</li>
+        <li>Inglés — Nivel intermedio (lectura técnica y documentación)</li>
+    </ul>
+</article>
+
+<hr>
+<article>
+    <h2>Disponibilidad</h2>
+    <div class="checkbox-group">
+        <label><input type="checkbox" checked> Tiempo completo</label>
+        <label><input type="checkbox"> Medio tiempo</label>
+        <label><input type="checkbox" checked> Remoto</label>
+        <label><input type="checkbox"> Presencial</label>
+        <label><input type="checkbox"> Freelance</label>
+    </div>
+</article>
+<hr>
+<article>
+    <h2>Referencias</h2>
+    <p>Disponibles bajo solicitud.</p>
+</article>
+
+    </section>
+    
+    <footer>
+    <p>© 2025 Juan David Cuervo Rodriguez — Todos los derechos reservados.</p>
+    <p>
+        📧 <a href="mailto:juandavidcuervorodriguez@gmail.com">juandavidcuervorodriguez@gmail.com</a> |
+        💼 <a href="https://github.com/">GitHub</a> |
+        🌐 <a href="#">Portafolio</a>
+    </p>
+    </footer>
+
+</body></html>
